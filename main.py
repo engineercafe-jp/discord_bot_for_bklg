@@ -26,10 +26,10 @@ async def on_message(message):
             body_start = content.index("本文：") + len("本文：")
             body = content[body_start:].strip()
             
-            print(f"Subject: {subject}")
-            print(f"Body: {body}")
+            await message.channel.send(f"Subject: {subject}")
+            await message.channel.send(f"Body: {body}")
         except ValueError:
-            print("メッセージの形式が正しくありません")
+            await message.channel.send("メッセージの形式が正しくありません")
     
     emoji = "✋"
     await message.add_reaction(emoji)
