@@ -17,30 +17,34 @@ async def on_message(message):
     if message.author == client.user:
         return
     
-    content = message.content
-    subject = ""
-    body = ""
+    # content = message.content
+    # subject = ""
+    # body = ""
     
-    if "件名：" in content and "本文：" in content:
-        try:
-            subject_start = content.index("件名：") + len("件名：")
-            subject_end = content.index("本文：")
-            subject = content[subject_start:subject_end].strip()
+    # if "件名：" in content and "本文：" in content:
+    #     try:
+    #         subject_start = content.index("件名：") + len("件名：")
+    #         subject_end = content.index("本文：")
+    #         subject = content[subject_start:subject_end].strip()
             
-            body_start = content.index("本文：") + len("本文：")
-            body = content[body_start:].strip()
+    #         body_start = content.index("本文：") + len("本文：")
+    #         body = content[body_start:].strip()
             
-            await message.channel.send(f"Subject: {subject}")
-            await message.channel.send(f"Body: {body}")
-        except ValueError:
-            await message.channel.send("メッセージの形式が正しくありません")
+    #         await message.channel.send(f"Subject: {subject}")
+    #         await message.channel.send(f"Body: {body}")
+    #     except ValueError:
+    #         await message.channel.send("メッセージの形式が正しくありません")
     
     emoji = "✋"
     await message.add_reaction(emoji)
     
+    await message.channel.send("ddddd1")
+    
     # # 受信したメッセージに対してHelloを送信
     # await message.channel.send("Hello")
-    message.channel.send(message.channel.name)
+    await message.channel.send(message.channel.name)
+    
+    await message.channel.send("dddddd2")
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 # Web サーバの立ち上げ
