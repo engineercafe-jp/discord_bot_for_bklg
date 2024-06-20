@@ -7,6 +7,10 @@ client = discord.Client(intents=discord.Intents.default())
 @client.event
 async def on_ready():
     print('ログインしました')
+    # Botが起動したときにHelloメッセージを送信
+    channel = client.get_channel(YOUR_CHANNEL_ID)  # ここに送信したいチャンネルIDを指定
+    if channel:
+        await channel.send("Hello")
 
 @client.event
 async def on_message(message):
@@ -17,7 +21,7 @@ async def on_message(message):
     subject = ""
     body = ""
     
-    if "件名：" in content and "本文：" in content:
+    if "件名：" in content and "本文："に content:
         try:
             subject_start = content.index("件名：") + len("件名：")
             subject_end = content.index("本文：")
@@ -33,6 +37,9 @@ async def on_message(message):
     
     emoji = "✋"
     await message.add_reaction(emoji)
+    
+    # 受信したメッセージに対してHelloを送信
+    await message.channel.send("Hello")
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 # Web サーバの立ち上げ
