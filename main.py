@@ -8,7 +8,7 @@ client = discord.Client(intents=discord.Intents.default())
 async def on_ready():
     print('ログインしました')
     # Botが起動したときにHelloメッセージを送信
-    channel = client.get_channel(YOUR_CHANNEL_ID)  # ここに送信したいチャンネルIDを指定
+    channel = client.get_channel(CHANNEL_ID)  # ここに送信したいチャンネルIDを指定
     if channel:
         await channel.send("Hello")
 
@@ -21,7 +21,7 @@ async def on_message(message):
     subject = ""
     body = ""
     
-    if "件名：" in content and "本文："に content:
+    if "件名：" in content and "本文：" in content:
         try:
             subject_start = content.index("件名：") + len("件名：")
             subject_end = content.index("本文：")
