@@ -4,18 +4,20 @@ from keep_alive import keep_alive
 
 client = discord.Client(intents=discord.Intents.default())
 
+# ログイン
 @client.event
 async def on_ready():
     print('ログインしました')
 
+# メッセージを読む
 @client.event
 async def on_message(message):
     if message.author == client.user:
         return
     
     content = message.content
-    subject = ""
-    body = ""
+    subject = "ああ"
+    body = "いい"
     
     if "件名：" in content and "本文：" in content:
         try:
