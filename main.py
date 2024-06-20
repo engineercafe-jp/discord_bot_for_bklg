@@ -10,6 +10,27 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    if message.author == client.user:
+        return
+    
+    content = message.content
+    subject = ""
+    body = ""
+    
+    if "件名：" in content and "本文：" in content:
+        try:
+            subject_start = content.index("件名：") + len("件名：")
+            subject_end = content.index("本文：")
+            subject = content[subject_start:subject_end].strip()
+            
+            body_start = content.index("本文：") + len("本文：")
+            body = content[body_start:].strip()
+            
+            print(f"Subject: {subject}")
+            print(f"Body: {body}")
+        except ValueError:
+            print("メッセージの形式が正しくありません")
+    
     emoji = "✋"
     await message.add_reaction(emoji)
 
