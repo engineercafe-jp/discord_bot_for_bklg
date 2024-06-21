@@ -27,7 +27,7 @@ async def on_message(message):
     lines = message.content.splitlines()
     
     # 件名と本文があるか確認
-    if len(lines) >1and'件名：'in lines[0]and'本文'in lines[1]:
+    if len(lines) >1 and'件名：'in lines[0]and'本文'in lines[1]:
     # 件名の後のテキストを抽出
     subject = lines[0].split('件名：',1)[1].strip()
     # 本文の後のテキストを抽出
