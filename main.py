@@ -1,45 +1,66 @@
 import discord
-import os
 from keep_alive import keep_alive
+import smtplib
+from email.mime.text import MIMEText
+import ssl
 
-client = discord.Client(intents=discord.Intents.default())
+client = discord.Client(intents=discord.Intents.all())
+
+# メアドを指定
+EMAIL_ADDRESS = MY_EMAIL_ADRESS
 
 @client.event
 async def on_ready():
     print('ログインしました')
-    # # Botが起動したときにHelloメッセージを送信
-    # channel = client.get_channel(CHANNEL_ID)  # ここに送信したいチャンネルIDを指定
-    # if channel:
-    #     await channel.send("Hello")
 
 @client.event
 async def on_message(message):
     if message.author == client.user:
         return
     
-    content = message.content
-    subject = ""
-    body = ""
+    # メッセージの内容を取得
+    contents = message.content
     
-    if "件名：" in content and "本文：" in content:
-        subject_start = content.index("件名：") + len("件名：")
-        subject_end = content.index("本文：")
-        subject = content[subject_start:subject_end].strip()
-        
-        body_start = content.index("本文：") + len("本文：")
-        body = content[body_start:].strip()
-        
-        await message.add_reaction("🙆‍♂️")
-    else:
-        await message.add_reaction("🙅")
+    # メッセージをパースして件名と本文を代入する
+    lines = contents.splitlines()
+    subject = lines[0]
+    body = lines[1] if len(lines) > 1 else ''
     
-    # # 受信したメッセージに対してHelloを送信
-    # await message.channel.send("Hello")
-    await message.channel.send(message.channel.name)
+    # メールの送信
+    send_email(subject, body)
 
-TOKEN = os.getenv("DISCORD_TOKEN")
+# メール送信関数
+def send_email(subject, body):
+    # GmailのSMTPサーバー情報
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 465  # SSL のポート
+    gmail_user = EMAIL_ADDRESS
+    gmail_password = MY_APPPASSWORD
+
+    # 送信先と送信元の情報
+    sender_email = EMAIL_ADDRESS
+    receiver_email = BKLG_MAILADRESS
+
+    # メールの作成
+    msg = MIMEText(body, 'html')
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg['Subject'] = subject
+
+    # メールの送信
+    try:
+        server = smtplib.SMTP_SSL(smtp_server, smtp_port, context=ssl.create_default_context())
+        server.login(gmail_user, gmail_password)
+        server.send_message(msg)
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+    finally:
+        server.quit()
+
+# DiscordのTOKEN（実装時には環境変数にする）
+TOKEN = DISCORD_TOKEN # os.getenv("DISCORD_TOKEN")
+
 # Web サーバの立ち上げ
 keep_alive()
 client.run(TOKEN)
-
-
