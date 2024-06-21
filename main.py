@@ -29,10 +29,10 @@ async def on_message(message):
     # 件名と本文があるか確認
     if len(lines) >1 and'件名：'in lines[0]and'本文'in lines[1]:
     # 件名の後のテキストを抽出
-    subject = lines[0].split('件名：',1)[1].strip()
+        subject = lines[0].split('件名：',1)[1].strip()
     # 本文の後のテキストを抽出
-    body = lines[1] .split('本文:', 1)[1].strip()
-    await message.channel.send
+        body = lines[1] .split('本文:', 1)[1].strip()
+        await message.channel.send
     
     # メールの送信
     send_email(subject, body)
