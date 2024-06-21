@@ -3,12 +3,11 @@ from keep_alive import keep_alive
 import smtplib
 from email.mime.text import MIMEText
 import ssl
-import os
 
 client = discord.Client(intents=discord.Intents.all())
 
 # webサーバー上の環境変数として設定したメアドを代入
-EMAIL_ADDRESS = os.getenv(MY_EMAIL_ADDRESS) 
+EMAIL_ADDRESS = MY_EMAIL_ADDRESS
 
 @client.event
 async def on_ready():
