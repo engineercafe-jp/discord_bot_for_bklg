@@ -8,7 +8,7 @@ import os
 client = discord.Client(intents=discord.Intents.all())
 
 # webサーバー上の環境変数として設定したメアドを代入
-EMAIL_ADDRESS = os.getenv('MY_EMAIL_ADDRESS') 
+EMAIL_ADDRESS = os.getenv(MY_EMAIL_ADDRESS) 
 
 @client.event
 async def on_ready():
