@@ -16,6 +16,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    # bot自身のメッセージには反応しない
     if message.author == client.user:
         return
     
@@ -23,9 +24,15 @@ async def on_message(message):
     contents = message.content
     
     # メッセージをパースして件名と本文を代入する
-    lines = contents.splitlines()
-    subject = lines[0]
-    body = lines[1] if len(lines) > 1 else ''
+    lines = message.content.splitlines()
+    
+    # 件名と本文があるか確認
+    if len(lines) >1and'件名：'in lines[0]and'本文'in lines[1]:
+    # 件名の後のテキストを抽出
+    subject = lines[0].split('件名：',1)[1].strip()
+    # 本文の後のテキストを抽出
+    body = lines[1] .split('本文:', 1)[1].strip()
+    await message.channel.send
     
     # メールの送信
     send_email(subject, body)
