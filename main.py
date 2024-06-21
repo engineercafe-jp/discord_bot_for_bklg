@@ -34,11 +34,11 @@ def send_email(subject, body):
     # GmailのSMTPサーバー情報
     smtp_server = "smtp.gmail.com"
     smtp_port = 465  # SSL のポート
-    gmail_user = EMAIL_ADRESS
+    gmail_user = MY_EMAIL_ADRESS
     gmail_password = MY_APPPASSWORD
 
     # 送信先と送信元の情報
-    sender_email = EMAIL_ADRESS
+    sender_email = MY_EMAIL_ADRESS
     receiver_email = BKLG_MAILADRESS
 
     # メールの作成
