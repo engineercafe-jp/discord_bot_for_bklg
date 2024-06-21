@@ -7,7 +7,7 @@ import ssl
 client = discord.Client(intents=discord.Intents.all())
 
 # webサーバー上の環境変数として設定したメアドを代入
-EMAIL_ADDRESS = MY_EMAIL_ADDRESS
+EMAIL_ADDRESS = MY_EMAIL_ADRESS
 
 @client.event
 async def on_ready():
@@ -34,11 +34,11 @@ def send_email(subject, body):
     # GmailのSMTPサーバー情報
     smtp_server = "smtp.gmail.com"
     smtp_port = 465  # SSL のポート
-    gmail_user = EMAIL_ADDRESS
+    gmail_user = EMAIL_ADRESS
     gmail_password = MY_APPPASSWORD
 
     # 送信先と送信元の情報
-    sender_email = EMAIL_ADDRESS
+    sender_email = EMAIL_ADRESS
     receiver_email = BKLG_MAILADRESS
 
     # メールの作成
