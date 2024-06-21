@@ -60,7 +60,8 @@ def send_email(subject, body):
         server.quit()
 
 # DiscordのTOKEN（実装時には環境変数にする）
-TOKEN = DISCORD_TOKEN # os.getenv("DISCORD_TOKEN")
+TOKEN = os.getenv("DISCORD_TOKEN")
+
 
 # Web サーバの立ち上げ
 keep_alive()
