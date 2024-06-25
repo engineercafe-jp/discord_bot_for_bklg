@@ -4,11 +4,12 @@ import smtplib
 from email.mime.text import MIMEText
 import ssl
 import os
+import pandas as pd
 
 client = discord.Client(intents=discord.Intents.all())
 
-# webサーバー上の環境変数として設定したメアドを代入
-EMAIL_ADDRESS = os.getenv("MY_EMAIL_ADRESS")
+# webサーバー上の環境変数として設定したメアドを代入（今後使わない）
+# EMAIL_ADDRESS = os.getenv("MY_EMAIL_ADRESS")
 
 @client.event
 async def on_ready():
@@ -19,21 +20,29 @@ async def on_message(message):
     # bot自身のメッセージには反応しない
     if message.author == client.user:
         return
-    
+
+    df_web = pd.read_csv(
+        "/etc/secrets/<channelmailreference.csv>"
+    )  # タスク登録をするプロジェクトを選択
+    channel_name = message.channel.name # メッセージが送信されたチャンネル名をchannel_nameとする
+    filtered_rows = df_web[df_web['channnelname'] == channel_name]  # チャンネル名で検索
+    BKLG_MAILADRESS = filtered_rows["mailadress"]
+
     # メッセージの内容を取得
     contents = message.content
-    
+
     # メッセージをパースして件名と本文を代入する
     lines = message.content.splitlines()
-    
+
     # 件名と本文があるか確認
     if len(lines) >1 and'件名：'in lines[0]and'本文'in lines[1]:
-    # 件名の後のテキストを抽出
+        # 件名の後のテキストを抽出
         subject = lines[0].split('件名：',1)[1].strip()
-    # 本文の後のテキストを抽出
+        # 本文の後のテキストを抽出
         body = lines[1] .split('本文:', 1)[1].strip()
+
         await message.channel.send
-    
+
     # メールの送信
     send_email(subject, body)
 
@@ -42,12 +51,12 @@ def send_email(subject, body):
     # GmailのSMTPサーバー情報
     smtp_server = "smtp.gmail.com"
     smtp_port = 465  # SSL のポート
-    gmail_user = EMAIL_ADRESS
-    gmail_password = MY_APPPASSWORD
+    gmail_user = EMAIL_ADRESS # type: ignore
+    gmail_password = MY_APPPASSWORD # type: ignore
 
     # 送信先と送信元の情報
-    sender_email = EMAIL_ADRESS
-    receiver_email = BKLG_MAILADRESS
+    sender_email = EMAIL_ADRESS # type: ignore
+    receiver_email = BKLG_MAILADRESS # type: ignore
 
     # メールの作成
     msg = MIMEText(body, 'html')
