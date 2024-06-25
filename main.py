@@ -4,7 +4,7 @@ import smtplib
 from email.mime.text import MIMEText
 import ssl
 import os
-import pandas as pd
+import pandas
 
 client = discord.Client(intents=discord.Intents.all())
 
@@ -21,7 +21,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    df_web = pd.read_csv(
+    df_web = pandas.read_csv(
         "/etc/secrets/<channelmailreference.csv>"
     )  # タスク登録をするプロジェクトを選択
     channel_name = message.channel.name # メッセージが送信されたチャンネル名をchannel_nameとする
