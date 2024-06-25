@@ -25,7 +25,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    df_web = pandas.read_csv("/etc/secrets/<channelmailreference.csv>")  # タスク登録をするプロジェクトを選択
+    df_web = pandas.read_csv("channelmailreference.csv")  # タスク登録をするプロジェクトを選択
     channel_name = message.channel.name # メッセージが送信されたチャンネル名をchannel_nameとする
     filtered_rows = df_web[df_web['channnelname'] == channel_name]  # チャンネル名で検索
     BKLG_MAILADRESS = filtered_rows["mailadress"]
@@ -44,7 +44,9 @@ async def on_message(message):
         body = lines[1] .split('本文:', 1)[1].strip()
 
         await message.channel.send
-
+        
+    message.channel.send(subject)
+    
     # メールの送信
     send_email(subject, body)
 
