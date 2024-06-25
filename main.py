@@ -5,11 +5,15 @@ from email.mime.text import MIMEText
 import ssl
 import os
 import pandas
+from dotenv import load_dotenv
+
 
 client = discord.Client(intents=discord.Intents.all())
+load_dotenv("channelmailreference.csv")
 
 # webサーバー上の環境変数として設定したメアドを代入（今後使わない）
 # EMAIL_ADDRESS = os.getenv("MY_EMAIL_ADRESS")
+
 
 @client.event
 async def on_ready():
@@ -21,9 +25,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    df_web = pandas.read_csv(
-        "/etc/secrets/<channelmailreference.csv>"
-    )  # タスク登録をするプロジェクトを選択
+    df_web = pandas.read_csv("/etc/secrets/<channelmailreference.csv>")  # タスク登録をするプロジェクトを選択
     channel_name = message.channel.name # メッセージが送信されたチャンネル名をchannel_nameとする
     filtered_rows = df_web[df_web['channnelname'] == channel_name]  # チャンネル名で検索
     BKLG_MAILADRESS = filtered_rows["mailadress"]
