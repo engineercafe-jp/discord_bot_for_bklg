@@ -6,17 +6,20 @@ import ssl
 import os
 import pandas
 from dotenv import load_dotenv
+import io
 
 
-# renderに保存したcsvを読む
-load_dotenv("channelmailreference.csv")
+# 環境変数をロード
+load_dotenv()
 
 client = discord.Client(intents=discord.Intents.all())
 
-# renderに保存したcsvを読む
-df_web = pandas.read_csv("channnelmailreference.csv")
+# 環境変数からCSVの内容を取得
+csv_data = os.getenv("channnelmailreference.csv")
 
-# ログインする
+# csvの内容をpandasで読む
+df_web = pandas.read_csv(io.StringIO(csv_data))
+
 @client.event
 async def on_ready():
     print('ログインしました')
@@ -30,6 +33,9 @@ async def on_message(message):
 
     channel_name = message.channel.name # channel_nameを定義
     filtered_rows = df_web[df_web['channnelname'] == channel_name]  # チャンネル名で検索
+    
+    if filtered_rows.empty:
+        return
     
     BKLG_MAILADDRESS = filtered_rows.iloc[0]['mailaddress'] # mailaddressに対応するメアドをBKLG_MAILADDRESSSと
 
