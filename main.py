@@ -4,12 +4,12 @@ from keep_alive import keep_alive
 from email.mime.text import MIMEText
 import ssl
 import os
-import pandas
+import pandas as pd
 from dotenv import load_dotenv
-import urllib.request
 
-load_dotenv()  # 環境変数をload
-df_web = pandas.read_csv("channnelmailreference.csv")  # csvの内容をpandasで読む
+fpath = "https://discord-bot-for-bklg.onrender.com"
+# pandasでcsvを読む
+df = pd.read_csv(fpath, encoding="channelmailreference.csv", dtype=str)
 
 # dicordにlogin
 client = discord.Client(intents=discord.Intents.all())
@@ -25,7 +25,7 @@ async def on_message(message):
 
 
     channel_name = message.channel.name # channel_nameを定義
-    filtered_rows = df_web[df_web['channnelname'] == channel_name]  # チャンネル名で検索
+    filtered_rows = df[df['channelname'] == channel_name] # チャンネル名で検索
     
     if filtered_rows.empty:
         return
