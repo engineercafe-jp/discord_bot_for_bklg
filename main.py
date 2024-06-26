@@ -62,7 +62,7 @@ async def send_email(subject, body, receiver_email, channel):
     smtp_port = 465  # SSL のポート
 
     # Gmailアカウントとアプリパスワードを取得
-    sender_email = os.getenv("EMAIL_ADDRESS")
+    sender_email = os.getenv("MY_EMAIL_ADDRESS")
     gmail_password = os.getenv("MY_APPPASSWORD")
 
     # メールの作成
