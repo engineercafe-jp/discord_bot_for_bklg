@@ -6,8 +6,7 @@ import ssl
 import os
 import pandas
 from dotenv import load_dotenv
-import io
-
+import urllib.request
 
 load_dotenv()  # 環境変数をload
 df_web = pandas.read_csv("channnelmailreference.csv")  # csvの内容をpandasで読む
