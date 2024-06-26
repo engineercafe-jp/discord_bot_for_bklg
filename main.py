@@ -9,17 +9,11 @@ from dotenv import load_dotenv
 import io
 
 
-# 環境変数をロード
-load_dotenv()
+load_dotenv()  # 環境変数をload
+df_web = pandas.read_csv("channnelmailreference.csv")  # csvの内容をpandasで読む
 
+# dicordにlogin
 client = discord.Client(intents=discord.Intents.all())
-
-# 環境変数からCSVの内容を取得
-csv_data = os.getenv("channnelmailreference.csv")
-
-# csvの内容をpandasで読む
-df_web = pandas.read_csv(io.StringIO(csv_data))
-
 @client.event
 async def on_ready():
     print('ログインしました')
@@ -37,7 +31,9 @@ async def on_message(message):
     if filtered_rows.empty:
         return
     
-    BKLG_MAILADDRESS = filtered_rows.iloc[0]['mailaddress'] # mailaddressに対応するメアドをBKLG_MAILADDRESSSと
+    print(channel_name) # 本番では不要
+    
+    BKLG_MAILADDRESS = filtered_rows.iloc[0]['mailaddress'] # 宛先の指定
 
     # メッセージの内容を取得
     contents = message.content
@@ -52,19 +48,17 @@ async def on_message(message):
         # 本文の後のテキストを抽出
         body = lines[1] .split('本文:', 1)[1].strip()
 
-        await send_email(subject, body,BKLG_MAILADDRESS)
+        await send_email(subject, body,BKLG_MAILADDRESS,message.channel)
 
 # メール送信関数
-async def send_email(subject, body,receiver_email):
+async def send_email(subject, body,receiver_email,channel):
     # GmailのSMTPサーバー情報
     smtp_server = "smtp.gmail.com"
     smtp_port = 465  # SSL のポート
-    gmail_user = os.getenv("EMAIL_ADDRESS") # type: ignore
+    
+    # gmailaccountとapppassを取得（本番では変更）
+    sender_email = os.getenv("EMAIL_ADDRESS") # type: ignore
     gmail_password = os.getenv("MY_APPPASSWORD") # type: ignore
-
-    # 送信先と送信元の情報
-    sender_email = EMAIL_ADDRESS # type: ignore
-    # receiver_email = BKLG_MAILADDRESS
 
     # メールの作成
     msg = MIMEText(body, 'html')
@@ -75,10 +69,12 @@ async def send_email(subject, body,receiver_email):
     # メールの送信
     try:
         server = smtplib.SMTP_SSL(smtp_server, smtp_port, context=ssl.create_default_context())
-        server.login(gmail_user, gmail_password)
+        server.login(sender_email, gmail_password)
         server.send_message(msg)
+        await channel.send("お疲れ様です。タスクを登録しておきますね！") # discord上に表示
         print("Email sent successfully!")
     except Exception as e:
+        await channel.send(f"すみません💦もう一度試していただけますか？{e}")
         print(f"Failed to send email: {e}")
     finally:
         server.quit()
